@@ -56,6 +56,6 @@ jobs:
       - name: Build and analyze
         shell: pwsh
         run: |
-          ${{ runner.temp }}\scanner\dotnet-sonarscanner begin /k:"src/ShoppingCart" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="${{ secrets.SONAR_HOST_URL }}"
+          ${{ runner.temp }}/scanner/dotnet-sonarscanner begin /k:"src/ShoppingCart" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="${{ secrets.SONAR_HOST_URL }}"
           dotnet build
-          ${{ runner.temp }}\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+          ${{ runner.temp }}/scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
