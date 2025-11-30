@@ -7,7 +7,7 @@ on:
     branches: [ main ]
 
 env:
-  solutionPath: "../src/ShoppingCart.sln";
+  solutionPath: "../src/ShoppingCart.sln"
 
 
 jobs:
