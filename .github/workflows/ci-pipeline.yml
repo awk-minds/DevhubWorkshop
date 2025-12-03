@@ -27,10 +27,20 @@ jobs:
         with:
           dotnet-version: "9.0.x" # or 7.0.x / 6.0.x etc.
 
+      - name: Install GitVersion
+        uses: gittools/actions/gitversion/setup@v4.2.0
+        with:
+          versionSpec: '6.4.x'
+
+      - name: Determine Version
+        id: version_step # step id used as a reference for output values
+        uses: gittools/actions/gitversion/execute@v4.2.0
+
+
       # Restore packages
       - name: Restore dependencies
         run: dotnet restore ${{ env.solutionPath }}
       
       - name: Build
-        run: dotnet build ${{ env.solutionPath }} --configuration Release --no-restore
+        run: dotnet build ${{ env.solutionPath }} --configuration Release --no-restore -p:Version=$env.fullSemVer 
       
