@@ -17,26 +17,56 @@ jobs:
         - uses: actions/checkout@v3
           with:
             submodules: recursive
+            fetch-depth: 0  
 
-        - name: Setup .NET
-          uses: actions/setup-dotnet@v4
-          with:
-            dotnet-version: "9.0.x" # or 7.0.x / 6.0.x etc.
+        # - name: Set up JDK 17
+        #   uses: actions/setup-java@v4
+        #   with:
+        #     java-version: 17
+        #     distribution: 'zulu' # Alternative distribution options are available.
+        # - name: Cache SonarQube packages
+        #   uses: actions/cache@v4
+        #   with:
+        #     path: ${{ runner.temp }}/cache
+        #     key: ${{ runner.os }}-sonar
+        #     restore-keys: ${{ runner.os }}-sonar
+        # - name: Cache SonarQube scanner
+        #   id: cache-sonar-scanner
+        #   uses: actions/cache@v4
+        #   with:
+        #     path: ${{ runner.temp }}/scanner
+        #     key: ${{ runner.os }}-sonar-scanner
+        #     restore-keys: ${{ runner.os }}-sonar-scanner
+        # - name: Install SonarQube scanner
+        #   if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
+        #   shell: pwsh
+        #   run: |
+        #     New-Item -Path ${{ runner.temp }}/scanner -ItemType Directory
+        #     dotnet tool update dotnet-sonarscanner --tool-path ${{ runner.temp }}/scanner
 
-
-      # Restore packages
-        - name: Restore dependencies
-          run: dotnet restore ${{ env.solutionPath }}
-      
-        - name: Build
-          run: dotnet build ${{ env.solutionPath }} --configuration Release --no-restore
 
         - name: Annotate
           # You may pin to the exact commit or the version.
           uses: JetBrains/ReSharper-InspectCode@v0.11
           with:
             solution: ${{ env.solutionPath }}
-            output: analysis.sarif.json
+            output: inspection-results.json
+        - name: Upload Results to GitHub
+          uses: github/codeql-action/upload-sarif@v4
+          if: success() || failure()
+          with:
+            sarif_file: inspection-results.sarif
+  
+        - name: Sonar scan (imports SARIF)
+          uses: SonarSource/sonarqube-scan-action@v5
+          env:
+            SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+            SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+          with:
+            args: >
+              -Dsonar.projectKey=YOUR_KEY
+              -Dsonar.sarifReportPaths=analysis.sarif.json
+
 
       permissions:
         security-events: write
