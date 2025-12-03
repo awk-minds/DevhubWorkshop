@@ -46,5 +46,5 @@ jobs:
         run: dotnet build ${{ env.solutionPath }} --configuration Release --no-restore -p:Version=${{ env.fullSemVer }}
       
       - name: Test with the dotnet CLI
-        run: dotnet test ${{ env.testProjectPath }} --no-build
+        run: dotnet test --no-build
       
