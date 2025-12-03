@@ -23,6 +23,7 @@ jobs:
           uses: JetBrains/ReSharper-InspectCode@v0.11
           with:
             solution: ${{ env.solutionPath }}
+            output: analysis.sarif.json
 
       permissions:
         security-events: write
