@@ -20,6 +20,6 @@ public class RepositoryTest : IntegrationFixture
         {
             PropertyNameCaseInsensitive = true
         });
-        Assert.Equal(items.Count, 10);
+        Assert.Equal(10, items?.Count);
     }
 }
