@@ -3,7 +3,6 @@ using Microsoft.Data.SqlClient;
 using ShoppingCart.Models;
 using Testcontainers.MsSql;
 using Xunit;
-using Assert = NUnit.Framework.Assert;
 
 namespace ShoppingCart.Tests.IntegrationTests;
 
@@ -21,6 +20,6 @@ public class RepositoryTest : IntegrationFixture
         {
             PropertyNameCaseInsensitive = true
         });
-        Assert.That(items.Count, Is.EqualTo(10));
+        Assert.Equal(items.Count, 10);
     }
 }
