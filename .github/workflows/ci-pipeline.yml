@@ -42,5 +42,5 @@ jobs:
         run: dotnet restore ${{ env.solutionPath }}
       
       - name: Build
-        run: dotnet build ${{ env.solutionPath }} --configuration Release --no-restore -p:Version=$env.fullSemVer 
+        run: dotnet build ${{ env.solutionPath }} --configuration Release --no-restore -p:Version=${{ env.fullSemVer }}
       
