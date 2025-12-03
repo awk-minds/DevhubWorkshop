@@ -18,6 +18,14 @@ jobs:
           with:
             submodules: recursive
 
+        - name: Setup .NET
+          uses: actions/setup-dotnet@v4
+          with:
+            dotnet-version: "9.0.x" # or 7.0.x / 6.0.x etc.
+
+        - name: Build
+          run: dotnet build ${{ env.solutionPath }} --configuration Release --no-restore -p:Version=${{ env.fullSemVer }}
+
         - name: Annotate
           # You may pin to the exact commit or the version.
           uses: JetBrains/ReSharper-InspectCode@v0.11
